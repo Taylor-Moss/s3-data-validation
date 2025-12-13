@@ -1,0 +1,103 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates S3 buckets and a Lambda function
+
+Parameters:
+  MainBucketName:
+    Type: String
+    AllowedPattern: '^[a-z0-9\-\.]+$'
+    ConstraintDescription: Error naming Bucket. Please see https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+    Description: Enter Bucket Name
+
+  ErrorBucketName:
+    Type: String
+    AllowedPattern: '^[a-z0-9\-\.]+$'
+    ConstraintDescription: Error naming Bucket. Please see https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
+    Description: Enter Bucket Name
+
+Resources:
+# s3
+  MainBucket:
+    Type: AWS::S3::Bucket
+    DependsOn: LambdaInvokePermission
+    Properties:
+      BucketName: !Ref MainBucketName
+      VersioningConfiguration:
+        Status: Enabled
+      NotificationConfiguration:
+            LambdaConfigurations:
+              - Event: s3:ObjectCreated:Put
+                Function: !GetAtt LambdaFunction.Arn
+                Filter:
+                  S3Key:
+                    Rules:
+                      - Name: suffix
+                        Value: .csv
+  ErrorBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ErrorBucket
+      VersioningConfiguration:
+        Status: Enabled
+
+# lambda
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: s3-csv-validation
+      Code: 
+        Code
+      Role: !Ref LambdaExecutionRole
+
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: String
+      SourceArn: !GetAtt LambdaFunction.Arn
+
+# iam
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: >-
+          {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Effect": "Allow",
+                      "Principal": {
+                          "Service": "lambda.amazonaws.com"
+                      },
+                      "Action": "sts:AssumeRole"
+                  }
+              ]
+          }
+      Description: Used for Lambda Execution
+      Path: /
+      Policies: 
+       - PolicyDocument: 
+           !Sub >-
+              {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Sid": "Statement1",
+                    "Effect": "Allow",
+                    "Action": [
+                      "s3:Put*",
+                      "s3:Get*",
+                      "s3:List*"
+                    ],
+                    "Resource": [
+                      "arn:aws:s3:::${MainBucketName}",
+                      "arn:aws:s3:::${MainBucketName}/*",
+                      "arn:aws:s3:::${ErrorBucketName}",
+                      "arn:aws:s3:::${ErrorBucketName}/*"
+                    ]
+                  }
+                ]
+              }
+         PolicyName: S3AccessPolicy
+      RoleName: LambdaExecutionRoleS3AccessRole

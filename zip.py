@@ -5,7 +5,7 @@ from pathlib import Path
 region = 'us-east-1'
 bucket_name = 'lambda-bucket-0214'
 lambda_file_path = Path(r"E:/Scripts/projects/s3-data-validation/lambda/lambda.py")
-zip_name = "lambda.zip"
+zip_name = lambda_file_path.parent / 'lambda.zip'
 s3_key = f"lambda/{zip_name}"
 
 # client

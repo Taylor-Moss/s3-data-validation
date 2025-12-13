@@ -43,9 +43,11 @@ Resources:
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
+      Runtime: python3.11
       FunctionName: s3-csv-validation
-      Code: 
-        Code
+      Code:
+        S3Bucket: lambda-bucket-0214
+        S3Key: lambda/lambda.zip
       Role: !Ref LambdaExecutionRole
 
   LambdaInvokePermission:

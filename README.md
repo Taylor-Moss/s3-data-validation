@@ -19,5 +19,5 @@ Example:
 ## Technologies Used
 - Language(s): Python
 - Frameworks / SDKs: boto3
-- Cloud / Services: AWS (S3, Lambda)
+- Cloud / Services: AWS (S3, CloudFormation Lambda)
 - Tools: Git, GitHub, VS Code

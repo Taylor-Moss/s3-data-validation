@@ -48,23 +48,23 @@ Resources:
 # lambda
   LambdaFunction:
     Type: AWS::Lambda::Function
+    DependsOn: LambdaExecutionRole
     Properties:
+      Handler: lambda_handler
       Runtime: python3.11
       FunctionName: s3-csv-validation
       Code:
-        S3Bucket: resource-bucket-af23
+        S3Bucket: resource-bucket-hk99
         S3Key: lambda/lambda.zip
-      Role: !Ref LambdaExecutionRole
+      Role: !GetAtt LambdaExecutionRole.Arn
 
   LambdaInvokePermission:
     Type: AWS::Lambda::Permission
-    DependsOn: LambdaFunction
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref LambdaFunction
+      FunctionName: !GetAtt LambdaFunction.Arn
       Principal: s3.amazonaws.com
       SourceAccount: !Ref AccountId
-      SourceArn: !GetAtt LambdaFunction.Arn
 
 # iam
   LambdaExecutionRole:

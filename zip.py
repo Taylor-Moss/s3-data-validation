@@ -3,13 +3,13 @@ from pathlib import Path
 
 # general variables
 region = 'us-east-1'
-bucket_name = 'resource-bucket-kj37'
+bucket_name = 'resource-bucket-hk99'
 
 # lambda variables
 lambda_file_path = Path(r"E:/Scripts/projects/s3-data-validation/lambda/lambda.py")
 lambda_file_name = 'lambda/lambda.zip'
 zip_name = lambda_file_path.parent / 'lambda.zip'
-lambda_key = f"lambda/{zip_name}"
+lambda_key = 'lambda/lambda.zip'
 
 # cfn variables
 stack_name = 'stack-1'
@@ -18,6 +18,7 @@ cfn_name = 'resources.yml'
 cfn_key = f"cloudformation/{cfn_name}"
 main_bucket_name = 'main-bucket-fa54'
 error_bucket_name = 'error-bucket-fa54'
+account_id = str(271443544393)
 
 # client
 s3 = boto3.client('s3', region_name=region)
@@ -64,10 +65,6 @@ def zip_lambda_file():
 
     print(f"Zipped {lambda_file_path} into {zip_name}")
 
-# make sure the zip file is created so it can be uploaded to s3
-time.sleep(5)
-print('Waiting 5 seconds for zip file creation...')
-
 # s3 upload
 def upload_zip_to_s3():
     s3.upload_file(lambda_file_name, bucket_name, lambda_key)
@@ -92,6 +89,10 @@ def create_cfn_stack():
         {
             'ParameterKey': 'ErrorBucketName',
             'ParameterValue': error_bucket_name,
+        },
+        {
+            'ParameterKey': 'AccountId',
+            'ParameterValue': account_id,
         },
     ],
 )

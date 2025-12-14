@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     error_bucket = 'ErrorBucketName'
     error_bucket = error_bucket.lower()
 
-    # download the csv file from s3, read the content, and decode from bytes to string, and split the content by lines
+    # download the csv file from s3, read the content, decode from bytes to string, and split the content by lines
     obj = s3.get_object(
         Bucket=bucket_name,
         Key=key
@@ -25,14 +25,16 @@ def lambda_handler(event, context):
     body = obj['Body'].read()
 
     print(body)
+
     # initialize an error flag to false - we will set this flag to true when we find an error
     error_found = False
 
     # define valid product lines and valid currencies
     valid_product_line = 'meat'
-    valid_currencies = ['USD', 'CAD', 'MXN']
+    valid_currency = ['USD', 'CAD', 'MXN']
 
     # read the csv content line by line using pythons csv reader - ignore the header line (data[1:])
+    
 
         # for each row extract the product line, currency, bill amount, and date from the specific columns
 

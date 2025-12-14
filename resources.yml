@@ -14,12 +14,6 @@ Parameters:
     ConstraintDescription: Error naming Bucket. Please see https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
     Description: Enter Bucket Name
 
-  LambdaBucketName:
-    Type: String
-    AllowedPattern: '^[a-z0-9\-\.]+$'
-    ConstraintDescription: Error naming Bucket. Please see https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html
-    Description: Enter Bucket Name
-
 Resources:
 # s3
   MainBucket:
@@ -45,13 +39,6 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
 
-  LambdaBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref LambdaBucketName
-      VersioningConfiguration:
-        Status: Enabled
-
 # lambda
   LambdaFunction:
     Type: AWS::Lambda::Function
@@ -59,7 +46,7 @@ Resources:
       Runtime: python3.11
       FunctionName: s3-csv-validation
       Code:
-        S3Bucket: !Ref LambdaBucketName
+        S3Bucket: lambda-bucket-23qj
         S3Key: lambda/lambda.zip
       Role: !Ref LambdaExecutionRole
 

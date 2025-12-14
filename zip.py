@@ -2,13 +2,34 @@ import boto3, botocore, zipfile, os
 from pathlib import Path
 
 # variables
-bucket_name = 'LambdaBucketName'
+region = 'us-east-1'
+bucket_name = 'lambda-bucket-23qj'
 lambda_file_path = Path(r"E:/Scripts/projects/s3-data-validation/lambda/lambda.py")
 zip_name = lambda_file_path.parent / 'lambda.zip'
 s3_key = f"lambda/{zip_name}"
 
 # client
-s3 = boto3.client('s3')
+s3 = boto3.client('s3', region_name=region)
+
+# create bucket
+def create_bucket_with_versioning():
+    try:
+        s3.create_bucket(
+            Bucket=bucket_name,
+            CreateBucketConfiguration={"LocationConstraint": region}
+                         )
+    except botocore.exceptions.ClientError as e:
+        error_code = e.response['Error']['Code']
+        if error_code == 'BucketAlreadyOwnedByYou':
+            print(f"Bucket '{bucket_name}' already exists and is owned by you.")
+    
+        elif error_code == 'BucketAlreadyExists':
+            raise RuntimeError(
+                print(f"Bucket name '{bucket_name}' already exists and is owned by another AWS account.")
+            )
+
+        else:
+            raise
 
 # zip the .py file
 def zip_lambda_file():
@@ -29,5 +50,6 @@ def upload_zip_to_s3():
     print(f"Uploaded {zip_name} to s3://{bucket_name}/{s3_key}")
 
 if __name__ == '__main__':
+    create_bucket_with_versioning()
     zip_lambda_file()
     upload_zip_to_s3()

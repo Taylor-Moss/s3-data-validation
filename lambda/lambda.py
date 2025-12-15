@@ -30,9 +30,8 @@ def lambda_handler(event, context):
     for row in csv.reader(data[1:], delimiter=','):
         # for each row extract the product line, currency, bill amount, and date from the specific columns
         date = row[6]
-        product_line= row[4]
+        product_line = row[4]
         currency = row[7]
-        bill_amount = float(row[8])
 
         # check if the product line is valid and if it isnt, set error flag to true and print an error message
         if product_line not in valid_product_line:

@@ -3,22 +3,22 @@ from pathlib import Path
 
 # general variables
 region = 'us-east-1'
-bucket_name = 'resource-bucket-hk99'
+bucket_name = 'resource-bucket-name'
 
 # lambda variables
-lambda_file_path = Path(r"E:/Scripts/projects/s3-data-validation/lambda/lambda.py")
+lambda_file_path = Path(r"E:/path/s3-data-validation/lambda/lambda.py")
 lambda_file_name = 'lambda/lambda.zip'
 zip_name = lambda_file_path.parent / 'lambda.zip'
 lambda_key = 'lambda/lambda.zip'
 
 # cfn variables
 stack_name = 'stack-1'
-cfn_file_path = Path(r"E:/Scripts/projects/s3-data-validation/resources.yml")
+cfn_file_path = Path(r"E:/path/s3-data-validation/resources.yml")
 cfn_name = 'resources.yml'
 cfn_key = f"cloudformation/{cfn_name}"
-main_bucket_name = 'main-bucket-fa54'
-error_bucket_name = 'error-bucket-fa54'
-account_id = str(271443544393)
+main_bucket_name = 'main-bucket-name'
+error_bucket_name = 'error-bucket-name'
+account_id = str(123456789012)
 
 # client
 s3 = boto3.client('s3', region_name=region)

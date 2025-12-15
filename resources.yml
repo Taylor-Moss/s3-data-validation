@@ -50,11 +50,12 @@ Resources:
     Type: AWS::Lambda::Function
     DependsOn: LambdaExecutionRole
     Properties:
-      Handler: lambda_handler
+      Timeout: 120
+      Handler: lambda.lambda_handler
       Runtime: python3.11
       FunctionName: s3-csv-validation
       Code:
-        S3Bucket: resource-bucket-hk99
+        S3Bucket: resource-bucket-name
         S3Key: lambda/lambda.zip
       Role: !GetAtt LambdaExecutionRole.Arn
 
@@ -88,25 +89,35 @@ Resources:
       Policies: 
        - PolicyDocument: 
            !Sub >-
-              {
+            {
                 "Version": "2012-10-17",
                 "Statement": [
-                  {
-                    "Sid": "Statement1",
-                    "Effect": "Allow",
-                    "Action": [
-                      "s3:Put*",
-                      "s3:Get*",
-                      "s3:List*"
-                    ],
-                    "Resource": [
-                      "arn:aws:s3:::${MainBucketName}",
-                      "arn:aws:s3:::${MainBucketName}/*",
-                      "arn:aws:s3:::${ErrorBucketName}",
-                      "arn:aws:s3:::${ErrorBucketName}/*"
-                    ]
-                  }
+                    {
+                        "Sid": "Statement1",
+                        "Effect": "Allow",
+                        "Action": [
+                            "s3:Put*",
+                            "s3:Get*",
+                            "s3:List*"
+                        ],
+                        "Resource": [
+                            "arn:aws:s3:::${MainBucketName}",
+                            "arn:aws:s3:::${MainBucketName}/*",
+                            "arn:aws:s3:::${ErrorBucketName}",
+                            "arn:aws:s3:::${ErrorBucketName}/*"
+                        ]
+                    },
+                    {
+                        "Sid": "Statement2",
+                        "Effect": "Allow",
+                        "Action": [
+                            "logs:CreateLogGroup",
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents"
+                        ],
+                        "Resource": "*"
+                    }
                 ]
-              }
+            }
          PolicyName: S3AccessPolicy
-      RoleName: LambdaExecutionRoleS3AccessRole
+      RoleName: LambdaExecutionS3AccessRole

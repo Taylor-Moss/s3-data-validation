@@ -34,7 +34,7 @@ In zip.py
 - line 21 change aws account id
 
 In resources.yml
-- line 57 change resource bucket name to match it in the zip.py file
+- line 58 change resource bucket name to match it in the zip.py file
 
 In lambda.py
 - line 15 change error bucket name to match the error bucket in zip.py

@@ -12,7 +12,7 @@ def lambda_handler(event, context):
     key = event['Records'][0]['s3']['object']['key']
 
     # define the name of the error bucket to copy into
-    error_bucket = 'error-bucket-fa54'
+    error_bucket = 'error-bucket-name'
     error_bucket = error_bucket.lower()
 
     # download the csv file from s3, read the content, decode from bytes to string, and split the content by lines
@@ -45,8 +45,6 @@ def lambda_handler(event, context):
             error = True
             print(f"Error in record {row[0]}: incorrect currency: {currency}.")
             break
-
-        # check if the bill amount is negative, if so set error flag to true and print an error message
 
         # check if the date is in the correct format ('%Y-%m-%d') - if not set error flag to true and print an error message
         try:

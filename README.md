@@ -35,3 +35,6 @@ In resources.yml
 
 In lambda.py
 - line 15 change error bucket name to match the error bucket in zip.py
+
+1. Run zip.py which will run the CloudFormation template
+1. Upload .csv file to the main bucket

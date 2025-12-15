@@ -24,6 +24,9 @@ Example:
 - Tools: Git, GitHub, VS Code
 
 ## Instructions
+1. Run zip.py which will run the CloudFormation template
+1. Upload .csv file to the main bucket
+
 In zip.py
 - line 6 change resource bucket name
 - line 19 change main bucket name
@@ -35,6 +38,3 @@ In resources.yml
 
 In lambda.py
 - line 15 change error bucket name to match the error bucket in zip.py
-
-1. Run zip.py which will run the CloudFormation template
-1. Upload .csv file to the main bucket

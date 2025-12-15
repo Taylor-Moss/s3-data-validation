@@ -1,4 +1,4 @@
-import boto3, botocore, zipfile, os, time
+import boto3, botocore, zipfile, os
 from pathlib import Path
 
 # general variables

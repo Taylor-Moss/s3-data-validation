@@ -13,6 +13,7 @@ Example:
 - data validation
 - automation with lambda
 - s3 event notifications
+- cloudformation resource deployment
 
 ---
 
@@ -21,3 +22,13 @@ Example:
 - Frameworks / SDKs: boto3
 - Cloud / Services: AWS (S3, CloudFormation, Lambda)
 - Tools: Git, GitHub, VS Code
+
+## Instructions
+In zip.py
+- line 6 change resource bucket name
+- line 19 change main bucket name
+- line 20 change error bucket name
+- line 21 change aws account id
+
+In resources.yml
+- line 57 change resource bucket name to match it in the zip.py file

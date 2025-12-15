@@ -37,13 +37,13 @@ def lambda_handler(event, context):
         if product_line not in valid_product_line:
             error = True
             print(f"Error in record {row[0]}: incorrect product line: {product_line}.")
-            break
+            continue
 
         # check if the currency is valid, if not set error flag to true and print an error message
         if currency not in valid_currencies:
             error = True
             print(f"Error in record {row[0]}: incorrect currency: {currency}.")
-            break
+            continue
 
         # check if the date is in the correct format ('%Y-%m-%d') - if not set error flag to true and print an error message
         try:
@@ -51,7 +51,7 @@ def lambda_handler(event, context):
         except ValueError:
             error = True
             print(f"Error in record {row[0]}: incorrect date format: {date}.")
-            break
+            continue
 
     # after checking all rows, if an error is found, copy the csv file to the error bucket and delete it from the original bucket
     if error:
